@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 
 class AuthViewModel : ViewModel() {
 
-    // estado único para login + registro
+
     data class AuthState(
         val name: String = "",
         val email: String = "",

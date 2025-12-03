@@ -1,4 +1,4 @@
-package com.example.gamezone.ui
+package com.example.gamezone.viewmodel
 
 import com.example.gamezone.data.model.Game
 

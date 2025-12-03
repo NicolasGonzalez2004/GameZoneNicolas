@@ -1,19 +1,64 @@
 package com.example.gamezone.navigation
 
-import androidx.navigation.NavController
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.gamezone.ui.JuegosScreen
 
-object NavGraph {
+import com.example.gamezone.ui.auth.LoginScreen
+import com.example.gamezone.ui.auth.RegisterScreen
+import com.example.gamezone.ui.theme.RandomUserScreen
 
-    fun navigateToLogin(navController: NavController) {
-        navController.navigate("login")
-    }
+@Composable
+fun AppNavGraph(navController: NavHostController) {
 
-    fun navigateToRegister(navController: NavController) {
-        navController.navigate("register")
-    }
+    NavHost(
+        navController = navController,
+        startDestination = "login"   // pantalla inicial
+    ) {
 
-    fun navigateToHome(navController: NavController) {
-        navController.navigate("home")
+        // ---------- LOGIN ----------
+        composable(route = "login") {
+            LoginScreen(
+                onLoginSuccess = {
+                    navController.navigate("juegos") {
+                        popUpTo("login") { inclusive = true }
+                    }
+                },
+                onCreateAccount = {
+                    navController.navigate("register")
+                }
+            )
+        }
+
+        // ---------- REGISTER ----------
+        composable(route = "register") {
+            RegisterScreen(
+                onRegisterDone = {
+                    navController.popBackStack() // vuelve a login
+                }
+            )
+        }
+
+        // ---------- JUEGOS ----------
+        composable(route = "juegos") {
+            JuegosScreen(
+                onLogout = {
+                    navController.navigate("login") {
+                        popUpTo("juegos") { inclusive = true }
+                    }
+                },
+                onRandomUser = {
+                    navController.navigate("randomuser")
+                }
+            )
+        }
+
+        // ---------- RANDOM USER (API externa) ----------
+        composable(route = "randomuser") {
+            // Tu pantalla que consume https://randomuser.me
+            RandomUserScreen()
+        }
     }
 }
-
