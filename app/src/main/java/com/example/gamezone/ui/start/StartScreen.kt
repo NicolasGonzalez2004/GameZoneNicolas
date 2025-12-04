@@ -1,3 +1,4 @@
+//pantalla de bienvenida.
 package com.example.gamezone.ui.start
 
 import androidx.compose.foundation.Image
@@ -17,16 +18,20 @@ fun StartScreen(
     onLoginClick: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
+    // caja que ocupa toda la pantalla y centra el contenido
     Box(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
         contentAlignment = Alignment.Center
     ) {
+
+        // columna para ordenar vertical
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            //  logo central
+
+            // imagen del logo, redondeada y grande
             Image(
                 painter = painterResource(id = R.drawable.logo_gamezone),
                 contentDescription = "Logo GameZone",
@@ -36,19 +41,22 @@ fun StartScreen(
                     .padding(bottom = 16.dp)
             )
 
-
-            //  bienvenida
+            // texto de bienvenida arriba
             Text(
                 text = "Bienvenido a GameZone 🎮",
                 style = MaterialTheme.typography.headlineSmall
             )
+
             Spacer(Modifier.height(16.dp))
+
+            // pequeño subtítulo
             Text(
                 text = "Explora, juega y disfruta con nosotros."
             )
+
             Spacer(Modifier.height(32.dp))
 
-            //  botones principales
+            // botón para ir al login
             Button(
                 onClick = onLoginClick,
                 modifier = Modifier.fillMaxWidth()
@@ -58,6 +66,7 @@ fun StartScreen(
 
             Spacer(Modifier.height(12.dp))
 
+            // botón outlined para ir al registro
             OutlinedButton(
                 onClick = onRegisterClick,
                 modifier = Modifier.fillMaxWidth()
@@ -67,5 +76,3 @@ fun StartScreen(
         }
     }
 }
-
-

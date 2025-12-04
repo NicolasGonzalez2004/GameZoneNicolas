@@ -18,11 +18,15 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             GameZoneTheme {
+                //   aplica el fondo y ocupar toda la pantalla
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // controlador de navegación
                     val navController = rememberNavController()
+
+                    // navgraph que define todas las pantallas de la app
                     AppNavGraph(navController = navController)
                 }
             }

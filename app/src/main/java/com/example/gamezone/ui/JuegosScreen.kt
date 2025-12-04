@@ -1,3 +1,4 @@
+//pantalla principal donde se muestran los juegos que vienen del backend.
 package com.example.gamezone.ui
 
 import androidx.compose.animation.core.animateDpAsState
@@ -36,13 +37,15 @@ fun JuegosScreen(
     onRandomUser: () -> Unit,
     viewModel: JuegosViewModel = viewModel()
 ) {
+    // escuchamos el estado que expone el viewmodel
     val state by viewModel.uiState.collectAsState()
 
-    // Cuando entra por primera vez a la pantalla, carga los juegos
+    // al entrar por primera vez a la pantalla se dispara la carga de juegos
     LaunchedEffect(Unit) {
         viewModel.cargarJuegos()
     }
 
+    // según el estado mostramos loading, error o la lista
     when {
         state.isLoading -> {
             Box(
@@ -71,7 +74,7 @@ fun JuegosScreen(
                     .fillMaxSize()
             ) {
 
-                //  LISTA DE JUEGOS
+                // lista scrollable con los juegos que vienen del backend
                 LazyColumn(
                     modifier = Modifier
                         .weight(1f)
@@ -83,7 +86,7 @@ fun JuegosScreen(
                     }
                 }
 
-                //  BOTÓN RANDOM USER (API EXTERNA)
+                // botón que llama a la pantalla / acción de random user (api externa)
                 Button(
                     onClick = onRandomUser,
                     modifier = Modifier
@@ -95,7 +98,7 @@ fun JuegosScreen(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                //  BOTÓN CERRAR SESIÓN
+                // botón para cerrar sesión y volver al flujo de auth
                 Button(
                     onClick = onLogout,
                     modifier = Modifier
@@ -112,10 +115,11 @@ fun JuegosScreen(
 @Composable
 fun JuegoItem(juego: Game) {
 
+    // fuente de interacción para saber si la card está presionada
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    // Animamos escala y elevación según si está presionado o no
+    // animamos escala y elevación cuando se aprieta la card
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.97f else 1f,
         label = "cardScale"
@@ -137,7 +141,7 @@ fun JuegoItem(juego: Game) {
         shape = RoundedCornerShape(16.dp),
         interactionSource = interactionSource,
         onClick = {
-
+            // acá podrías navegar al detalle del juego si quisieras
         }
     ) {
         Row(
@@ -145,7 +149,7 @@ fun JuegoItem(juego: Game) {
                 .padding(12.dp)
         ) {
 
-            // Imagen del juego
+            // imagen del juego cargada desde url con coil
             AsyncImage(
                 model = juego.imageUrl,
                 contentDescription = juego.title,
@@ -158,13 +162,16 @@ fun JuegoItem(juego: Game) {
             Spacer(modifier = Modifier.width(12.dp))
 
             Column {
+                // título del juego, con texto de respaldo por si viene null
                 Text(
                     text = juego.title ?: "Juego sin título",
                     style = MaterialTheme.typography.titleMedium
                 )
                 Spacer(modifier = Modifier.height(4.dp))
+                // descripción o texto por defecto si falta
                 Text(text = juego.description ?: "Sin descripción")
                 Spacer(modifier = Modifier.height(4.dp))
+                // muestra el precio en clp, si no viene usa 0.0
                 Text(text = "Precio: ${juego.price ?: 0.0} CLP")
             }
         }

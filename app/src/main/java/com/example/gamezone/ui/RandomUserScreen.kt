@@ -1,3 +1,4 @@
+//pantalla que muestra un usuario aleatorio obtenido desde la API RandomUser.
 package com.example.gamezone.ui.theme
 
 import androidx.compose.foundation.layout.*
@@ -18,13 +19,15 @@ fun RandomUserScreen(
     viewModel: RandomUserViewModel = viewModel(),
     onBack: () -> Unit = {}
 ) {
+    // escuchamos el estado que expone el viewmodel
     val state by viewModel.uiState.collectAsState()
 
-    // Cuando entro a la pantalla, pido un usuario aleatorio
+    // al entrar por primera vez a la pantalla pedimos un usuario aleatorio
     LaunchedEffect(Unit) {
         viewModel.loadRandomUser()
     }
 
+    // contenedor principal centrado
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -33,10 +36,12 @@ fun RandomUserScreen(
     ) {
 
         when {
+            // estado de carga: mostramos spinner
             state.isLoading -> {
                 CircularProgressIndicator()
             }
 
+            // si hay error, lo mostramos y damos opción de reintentar
             state.error != null -> {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
@@ -50,6 +55,7 @@ fun RandomUserScreen(
                 }
             }
 
+            // si tenemos usuario, mostramos sus datos
             state.user != null -> {
                 val user = state.user!!
 
@@ -58,7 +64,7 @@ fun RandomUserScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
 
-                    // FOTO
+                    // foto de perfil en círculo
                     AsyncImage(
                         model = user.picture.large,
                         contentDescription = "Foto usuario",
@@ -69,7 +75,7 @@ fun RandomUserScreen(
 
                     Spacer(Modifier.height(16.dp))
 
-                    // NOMBRE
+                    // nombre completo del usuario
                     Text(
                         text = "${user.name.first} ${user.name.last}",
                         style = MaterialTheme.typography.headlineSmall,
@@ -78,17 +84,19 @@ fun RandomUserScreen(
 
                     Spacer(Modifier.height(8.dp))
 
-                    // EMAIL
+                    // email del usuario
                     Text(text = "Email: ${user.email}")
 
                     Spacer(Modifier.height(24.dp))
 
+                    // botón para pedir otro usuario aleatorio
                     Button(onClick = { viewModel.loadRandomUser() }) {
                         Text("Otro usuario aleatorio")
                     }
 
                     Spacer(Modifier.height(16.dp))
 
+                    // botón para volver a la pantalla de juegos
                     Button(onClick = onBack) {
                         Text("Volver a juegos")
                     }
