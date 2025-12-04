@@ -46,7 +46,8 @@ Proyecto desarrollado en **Kotlin + Jetpack Compose**, siguiendo arquitectura **
 ### ✔ APK firmado + Llave .jks
 - Proyecto compilado en modo **release**
 - APK firmado  
-- Archivo `.jks` 
+- Archivo `.jks`
+- “Se implementaron pruebas unitarias con JUnit en el módulo test, validando reglas de negocio como la validación de correos y el cálculo de precios con descuento. Las pruebas se ejecutan mediante la tarea testDebugUnitTest en Gradle y se encuentran en el paquete com.example.gamezone (test)
 
 
 
